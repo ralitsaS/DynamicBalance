@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\build\\intermediates\\res\\merged\\debug\\raw\\berichtlonger.wav",
+        "source": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\src\\main\\res\\raw\\berichtlonger.wav"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\build\\intermediates\\res\\merged\\debug\\raw\\berichtrepeat.wav",
+        "source": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\src\\main\\res\\raw\\berichtrepeat.wav"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\build\\intermediates\\res\\merged\\debug\\raw\\ringtone.wav",
+        "source": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\src\\main\\res\\raw\\ringtone.wav"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\build\\intermediates\\res\\merged\\debug\\raw\\bericht.wav",
+        "source": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\src\\main\\res\\raw\\bericht.wav"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\build\\intermediates\\res\\merged\\debug\\raw\\calmdown.wav",
+        "source": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\src\\main\\res\\raw\\calmdown.wav"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\build\\intermediates\\res\\merged\\debug\\raw\\cellringcut.wav",
+        "source": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\src\\main\\res\\raw\\cellringcut.wav"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\build\\intermediates\\res\\merged\\debug\\raw\\ringcell.wav",
+        "source": "C:\\Users\\User\\Desktop\\MASTER THESIS\\Android-20171029T125606Z-001\\Android\\DyBaCompanion\\app\\src\\main\\res\\raw\\ringcell.wav"
+    }
+]

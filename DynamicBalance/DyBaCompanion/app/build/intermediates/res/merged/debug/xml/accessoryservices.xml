@@ -1,0 +1,18 @@
+<resources>
+    <application name="DyBaCompanion">
+        <serviceProfile id="/dynamicbalance/call" name="call"
+            role="provider"  version="2.0"
+            serviceImpl="com.example.android.dybacompanion.service.SAPServiceProvider"
+            serviceLimit="ANY"
+            serviceTimeout="10"
+            >
+            <supportedTransports>
+                <transport type="TRANSPORT_BT"/>
+                <!--<transport type="TRANSPORT_WIFI"/>-->
+            </supportedTransports>
+            <serviceChannel id="110" dataRate="low" priority="low"
+                reliability="enable">
+            </serviceChannel>
+        </serviceProfile>
+    </application>
+</resources>

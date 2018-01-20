@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.android.dybacompanion">
+
+    <uses-permission android:name="com.samsung.WATCH_APP_TYPE.Companion" />
+    <uses-permission android:name="com.samsung.accessory.permission.ACCESSORY_FRAMEWORK" />
+    <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <receiver android:name="com.samsung.android.sdk.accessory.RegisterUponInstallReceiver">
+            <intent-filter>
+                <action android:name="com.samsung.accessory.action.REGISTER_AGENT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.samsung.android.sdk.accessory.ServiceConnectionIndicationBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.samsung.accessory.action.SERVICE_CONNECTION_REQUESTED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.example.android.dybacompanion.service.SAPServiceProvider" />
+
+        <meta-data
+            android:name="AccessoryServicesLocation"
+            android:value="/res/xml/accessoryservices.xml" />
+
+        <activity
+            android:name=".NavigationUI"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/FullscreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Call"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="call"
+            android:theme="@style/FullscreenTheme">
+
+        </activity>
+        <activity
+            android:name=".Idle"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="idle"
+            android:theme="@style/FullscreenTheme">
+
+        </activity>
+        <activity
+            android:name=".Moments"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="moments"
+            android:theme="@style/FullscreenTheme">
+
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,15 @@
+<resources>
+	<application name="DyBaCompanion">
+		<serviceProfile id="/dynamicbalance/call" name="call"
+		                role="consumer"  version="2.0"
+		                >
+			<supportedTransports>
+				<transport type="TRANSPORT_BT"/>
+				<!--<transport type="TRANSPORT_WIFI"/>-->
+			</supportedTransports>
+			<serviceChannel id="110" dataRate="low" priority="low"
+			                reliability="enable">
+			</serviceChannel>
+		</serviceProfile>
+	</application>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/button_opendialogbox"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Self Report" />
+
+    <Button
+        android:id="@+id/button_moments"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Detected Moments" />
+
+    <Button
+        android:id="@+id/button_senddata"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Send Data" />
+</LinearLayout>

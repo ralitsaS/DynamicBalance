@@ -1,0 +1,32 @@
+* {
+    font-family: Verdana, Lucida Sans, Arial, Helvetica, sans-serif;
+}
+
+body {
+    margin: 0px auto;
+    background-color:#222;
+}
+
+.contents {
+	display: flex;
+	display: -webkit-flex;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	
+}
+
+
+.content_text {
+	font-weight:bold;
+	font-size:5em;
+	color:#fff;
+	position: relative;
+	top: 130px;
+}
+
+svg {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: -1;
+}

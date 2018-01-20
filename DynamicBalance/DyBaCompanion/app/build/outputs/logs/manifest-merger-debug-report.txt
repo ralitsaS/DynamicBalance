@@ -1,0 +1,161 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:2:1-64:12
+	package
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:3:5-48
+		INJECTED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:2:11-69
+	android:versionCode
+		INJECTED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml
+uses-permission#com.samsung.WATCH_APP_TYPE.Companion
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:5:5-76
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:5:22-73
+uses-permission#com.samsung.accessory.permission.ACCESSORY_FRAMEWORK
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:6:5-92
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:6:22-89
+uses-permission#com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:7:5-117
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:7:22-114
+uses-permission#android.permission.BLUETOOTH
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:9:5-84
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:9:22-65
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:10:5-73
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:10:22-71
+application
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:12:5-62:19
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\User\.android\build-cache\47456d0c3e674d399b9b5bb19e557b3d8cf04f1c\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\User\.android\build-cache\26040c8a419578bfbb1e116268d644a0d190059c\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\User\.android\build-cache\af455b7daab13838ab370792c5f3caa5b79e1c00\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\User\.android\build-cache\dc77a5206433f3cdb1094f16bca18fe4537463fc\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\User\.android\build-cache\93fb5f549414a7f11859ec0bd1b120bb0e0a10bc\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\User\.android\build-cache\62a260222c9f56aca9a7c1fafec0f00c81cfb44b\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\User\.android\build-cache\3648ada60cad96bd5ecfde9f56ef6eed3df358e0\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\User\.android\build-cache\67d53a79270e8fdc0e7fcfb66bd1aedebcb9bbd3\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\User\.android\build-cache\770eebd98944425259425a987b15c85aa27d3830\output\AndroidManifest.xml:29:5-20
+	android:label
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:15:9-41
+	android:supportsRtl
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:17:9-35
+	android:roundIcon
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:16:9-54
+	android:allowBackup
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:13:9-35
+	android:icon
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:14:9-43
+	android:theme
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:18:9-40
+receiver#com.samsung.android.sdk.accessory.RegisterUponInstallReceiver
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:20:9-24:20
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:20:19-95
+intent-filter#com.samsung.accessory.action.REGISTER_AGENT
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:21:13-23:29
+action#com.samsung.accessory.action.REGISTER_AGENT
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:22:17-86
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:22:25-83
+receiver#com.samsung.android.sdk.accessory.ServiceConnectionIndicationBroadcastReceiver
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:25:9-29:20
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:25:19-112
+intent-filter#com.samsung.accessory.action.SERVICE_CONNECTION_REQUESTED
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:26:13-28:29
+action#com.samsung.accessory.action.SERVICE_CONNECTION_REQUESTED
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:27:17-100
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:27:25-97
+service#com.example.android.dybacompanion.service.SAPServiceProvider
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:31:9-96
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:31:18-93
+meta-data#AccessoryServicesLocation
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:33:9-35:62
+	android:value
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:35:13-59
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:34:13-53
+activity#com.example.android.dybacompanion.NavigationUI
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:37:9-47:20
+	android:label
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:40:13-45
+	android:configChanges
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:39:13-74
+	android:theme
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:41:13-51
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:38:13-41
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:42:13-46:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:43:17-69
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:43:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:45:17-77
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:45:27-74
+activity#com.example.android.dybacompanion.Call
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:48:9-54:20
+	android:label
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:51:13-33
+	android:configChanges
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:50:13-74
+	android:theme
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:52:13-51
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:49:13-33
+activity#com.example.android.dybacompanion.Idle
+ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:55:9-61:20
+	android:label
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:58:13-33
+	android:configChanges
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:57:13-74
+	android:theme
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:59:13-51
+	android:name
+		ADDED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml:56:13-33
+uses-sdk
+INJECTED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\User\.android\build-cache\47456d0c3e674d399b9b5bb19e557b3d8cf04f1c\output\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\User\.android\build-cache\26040c8a419578bfbb1e116268d644a0d190059c\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\User\.android\build-cache\af455b7daab13838ab370792c5f3caa5b79e1c00\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\User\.android\build-cache\dc77a5206433f3cdb1094f16bca18fe4537463fc\output\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\User\.android\build-cache\93fb5f549414a7f11859ec0bd1b120bb0e0a10bc\output\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\User\.android\build-cache\62a260222c9f56aca9a7c1fafec0f00c81cfb44b\output\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\User\.android\build-cache\3648ada60cad96bd5ecfde9f56ef6eed3df358e0\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\User\.android\build-cache\67d53a79270e8fdc0e7fcfb66bd1aedebcb9bbd3\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\User\.android\build-cache\770eebd98944425259425a987b15c85aa27d3830\output\AndroidManifest.xml:21:5-23:58
+	tools:overrideLibrary
+		ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\User\.android\build-cache\47456d0c3e674d399b9b5bb19e557b3d8cf04f1c\output\AndroidManifest.xml:23:9-75
+	android:targetSdkVersion
+		INJECTED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\src\main\AndroidManifest.xml
+meta-data#android.support.VERSION
+ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\User\.android\build-cache\47456d0c3e674d399b9b5bb19e557b3d8cf04f1c\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\User\.android\build-cache\26040c8a419578bfbb1e116268d644a0d190059c\output\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\User\.android\build-cache\af455b7daab13838ab370792c5f3caa5b79e1c00\output\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\User\.android\build-cache\dc77a5206433f3cdb1094f16bca18fe4537463fc\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\User\.android\build-cache\93fb5f549414a7f11859ec0bd1b120bb0e0a10bc\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\User\.android\build-cache\62a260222c9f56aca9a7c1fafec0f00c81cfb44b\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\User\.android\build-cache\3648ada60cad96bd5ecfde9f56ef6eed3df358e0\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\User\.android\build-cache\67d53a79270e8fdc0e7fcfb66bd1aedebcb9bbd3\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\User\.android\build-cache\770eebd98944425259425a987b15c85aa27d3830\output\AndroidManifest.xml:25:5-27:41
+	android:value
+		ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\User\.android\build-cache\47456d0c3e674d399b9b5bb19e557b3d8cf04f1c\output\AndroidManifest.xml:27:9-38
+	android:name
+		ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\User\.android\build-cache\47456d0c3e674d399b9b5bb19e557b3d8cf04f1c\output\AndroidManifest.xml:26:9-47

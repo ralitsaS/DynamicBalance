@@ -1,0 +1,1 @@
+include ':app', ':accessory-v2.5.2', ':sdk-v1.0.0'

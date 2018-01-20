@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\libs\accessory-v2.5.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="ea6af326eeef4c0059a1bb55911e2f25cd3a5e40">
+        <dex dex="C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\build\intermediates\pre-dexed\debug\accessory-v2.5.2_7afeaa09fc44ce1488841cdc1a29b09198995cf0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\libs\sdk-v1.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="e2ce3786b6e9519934c4a54aaaaf39525bf4486c">
+        <dex dex="C:\Users\User\Desktop\MASTER THESIS\Android-20171029T125606Z-001\Android\DyBaCompanion\app\build\intermediates\pre-dexed\debug\sdk-v1.0.0_cad943ed150cdde10b81dde24867c0f1fd12c53d.jar" />
+    </item>
+
+</items>
