@@ -51,6 +51,14 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/textView7" />
 
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner2"
+                android:layout_marginTop="19dp"
+                android:text="If the options above do not match your experience you can add your own context clue below. Keep the text to a couple of words. Your context will appear in the drop-down box next time!" />
+
             <EditText
                 android:id="@+id/self_report_edit_text"
                 android:layout_width="wrap_content"
@@ -64,6 +72,16 @@
                 android:scrollbars="vertical"
                 android:textSize="13dp"
                 android:visibility="invisible" />
+
+            <EditText
+                android:id="@+id/add_context"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView8"
+                android:layout_marginTop="21dp"
+                android:ems="10"
+                android:inputType="textPersonName" />
         </RelativeLayout>
 
         <android.support.design.widget.FloatingActionButton

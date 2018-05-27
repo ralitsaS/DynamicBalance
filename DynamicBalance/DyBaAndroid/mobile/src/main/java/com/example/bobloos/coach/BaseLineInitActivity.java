@@ -60,9 +60,22 @@ public class BaseLineInitActivity extends Activity {
         setBaseLineButtonListener();
         setPrefHandler();
 
-        if (isBaseLinePresent() == true){
+
+        if(sharedPrefs.getBoolean("baseLinePerforming", false)){
+            hallo.setText("Bezig...");
+            instructions.setText("Op dit moment berekenen we jouw basismeting van je hartslag. Zorg dat het horloge goed vast zit. Dit process kan maximaal 5 uur duren. Vroegtijdig de basismeting stoppen kan, ten nadelen van de betrouwbaarheid van het systeem");
+            baseLineButton.setText("STOP BASISMETING");
+            progressBar.setVisibility(View.VISIBLE);
+            setProgressBar();
+        } else if(sharedPrefs.getBoolean("backtoMain", false)){
+            hallo.setText("Klaar!");
+            instructions.setText("Jouw basismeting is voltooid en je kunt nu gebruik maken van de applicatie");
+            baseLineButton.setText("BEGINNEN");
+            progressBar.setVisibility(View.INVISIBLE);
+        } else{
             hallo.setText("Mmmmmm...");
             instructions.setText("Je hebt al eerder een basismeting uitgevoerd. Wanneer je hieronder op de knop drukt, zal deze basismeting overschreven worden. Het uitvoeren van een basismeting duurt maximaal 5 uur!");
+            progressBar.setVisibility(View.INVISIBLE);
         }
 
 
@@ -80,13 +93,7 @@ public class BaseLineInitActivity extends Activity {
         }
     }
 
-    private boolean isBaseLinePresent(){
-        if (user.getAvgHeartRate() != null && user.getStdfHeartRate() != null){
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 
     private void setBaseLineButtonListener(){
         baseLineButton.setOnClickListener(new View.OnClickListener() {
@@ -110,25 +117,9 @@ public class BaseLineInitActivity extends Activity {
     }
 
     private void startBaselineReading() {
-        hrReceiver = this.hrMessageReceiver;
-        BaseLineInitActivity.this.registerReceiver(hrReceiver, new IntentFilter("com.example.Broadcast"));
 
-        long timeInMs = System.currentTimeMillis();
-        sharedPrefsEditor.putLong("baseLineTimeStamp", timeInMs);
-        sharedPrefsEditor.putBoolean("baseLinePerforming", true);
-        sharedPrefsEditor.commit();
-
-        lastMeasurementTime = System.currentTimeMillis();
-        remoteSensorManager.startMeasurement();
-        Intent intent = new Intent();
-        intent.setAction("com.example.Broadcast1");
-        intent.putExtra("START_TIME", lastMeasurementTime); // get current millisec time
-        BaseLineInitActivity.this.sendBroadcast(intent);
-        SharedPreferences pref = BaseLineInitActivity.this.getSharedPreferences("START_TIME", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putLong("START_TIME", lastMeasurementTime);
-        editor.apply();
-
+        Intent serviceIntent = new Intent(BaseLineInitActivity.this, BaseLineService.class);
+        startService(serviceIntent);
         /// UI STUFF
 
         progressBar.setVisibility(View.VISIBLE);
@@ -151,9 +142,7 @@ public class BaseLineInitActivity extends Activity {
 
         progressBar.setVisibility(View.INVISIBLE);
 
-        hallo.setText("Klaar!");
-        instructions.setText("Jouw basismeting is voltooid en je kunt nu gebruik maken van de applicatie");
-        baseLineButton.setText("BEGINNEN");
+
 
         sharedPrefsEditor.putBoolean("backtoMain", true);
         sharedPrefsEditor.putBoolean("baseLinePerforming", false);
@@ -165,51 +154,13 @@ public class BaseLineInitActivity extends Activity {
     }
 
 
-    private BroadcastReceiver hrMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            try {
-                // get extras
-                float[] heartRate = intent.getFloatArrayExtra("HR");
-                int accuracy = intent.getIntExtra("ACCR", 0);
-                int sensorType = intent.getIntExtra("SENSOR_TYPE", 0);
-                int userId = user.getId();
-                long timeInMs = System.currentTimeMillis();
+    private void setProgressBar(){
 
-                HeartRateDataModel hrModel = new HeartRateDataModel( );
-                hrModel.setUserId(String.valueOf(userId));
-                hrModel.setAccuracy(String.valueOf(accuracy));
-                hrModel.setUniqueUserId(user.getUniqueUserId());
-                hrModel.setHeartRate(String.valueOf(heartRate[0]));
-                hrModel.setMeasurementTime(timeInMs);
-                Log.d("ReceiverBaseline", "Got HR: " + heartRate[0] + ". Got Accuracy: " + accuracy);
-                db.addHeartRateData(hrModel);
-                baseLineEnoughMeasuresFromMoment();
-            } catch (Exception e) {
-            }
-        }
-    };
-
-    private void baseLineEnoughMeasuresFromMoment(){
         Long timestamp = sharedPrefs.getLong("baseLineTimeStamp", 0);
-        Log.d("TIMESTAMP", timestamp.toString());
         List<HeartRateDataModel> hrs_by_timestamp = db.getAllHeartRateAfterTimeStamp(timestamp);
         int list_count = hrs_by_timestamp.size();
-        Log.d("BASLINE COUNTERD TILL NOW", String.valueOf(list_count));
-        if(list_count>300){
-            stopAndSaveBaseLineReading();
-        } else if (list_count == 50 || list_count == 100 || list_count == 150 || list_count == 200 || list_count == 300){
-            setBaseLine();
-            setProgressBar(list_count);
-        } else {
-            setProgressBar(list_count);
-        }
-    }
 
-    private void setProgressBar(Integer list_count){
         double result = (( (double)list_count / 300.0) * 100.0);
-        Log.d("BASELINE COUNT PROGBAR", String.valueOf(result));
-        Log.d("BASELINE COUNT PROGBAR - MATH", String.valueOf((int)result));
 
         progressBar.setProgress( (int)result);
     }

@@ -53,6 +53,7 @@
         <service android:name=".ActivityRecognizedService" />
         <service android:name=".LocationService" />
         <service android:name=".DefineMoment" />
+        <service android:name=".BaseLineService" />
 
         <activity android:name=".SettingsActivity" />
         <activity android:name=".BaseLineInitActivity" />

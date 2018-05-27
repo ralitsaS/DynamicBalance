@@ -19,6 +19,8 @@ import com.example.bobloos.database.DatabaseHandler;
 import com.example.bobloos.model.SelfReportModel;
 import com.example.bobloos.model.UserModel;
 
+import java.util.List;
+
 /**
  * Created by bob.loos on 30/05/16.
  */
@@ -26,21 +28,21 @@ public class EditSelfReport extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton fab_add;
     FloatingActionButton fab_delete;
-    //EditText storyTextView;
+    EditText context;
+    String text;
     Spinner contextSpinner;
     UserModel user;
     SelfReportModel selfReport;
     DatabaseHandler db;
-    String[] context_list = new String[]{"appointment/presentation", "working/studying",
-            "social situation", "change of schedule/plan", "other", "unknown"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        List<String> context_list = db.getContextData();
         setContentView(R.layout.activity_edit_self_report);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //storyTextView = (EditText) findViewById(R.id.self_report_edit_text);
+        context = (EditText)  findViewById(R.id.add_context2);
         contextSpinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, context_list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -95,13 +97,19 @@ public class EditSelfReport extends AppCompatActivity {
     }
 
     public void saveSelfReport(){
-        //String text = storyTextView.getText().toString();
-        String text = contextSpinner.getSelectedItem().toString();
+        if(context.getText().toString().equals(""))
+        {
+            text = contextSpinner.getSelectedItem().toString();
+        } else
+        {
+            text = context.getText().toString();
+            db.addContextData(text);
+        }
 
         //long timeInMs = System.currentTimeMillis();
         selfReport.setReportText(text);
         //selfReport.setTimeStamp(String.valueOf(timeInMs));
-        db.updateFeedback(selfReport.getTimestamp(), null, null, text);
+        db.updateFeedback(selfReport.getTimestamp(), null, text);
         db.updateSelfReport(selfReport);
 
 

@@ -21,9 +21,13 @@ import com.example.bobloos.database.DatabaseHandler;
 import com.example.bobloos.model.PhysStateModel;
 import com.example.bobloos.model.SelfReportModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+import static java.util.TimeZone.getTimeZone;
 
 
 /**
@@ -55,9 +59,10 @@ public class CoachListFragment extends Fragment {
     }
 
     void refreshItems() {
-        List <PhysStateModel> items = db.getAllPhysStates();
-        if (items.size() != 0) {
-            recycleAdapter.update(items);
+        //List <PhysStateModel> items = db.getAllPhysStates();
+        ArrayList<HashMap<String, String>> pred_items = db.getFeedbackData();
+        if (pred_items.size() != 0) {
+            recycleAdapter.update(pred_items);
         }
         onItemsLoadComplete();
     }
@@ -67,7 +72,7 @@ public class CoachListFragment extends Fragment {
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-        List<PhysStateModel>listWithState = db.getAllPhysStates();
+        ArrayList<HashMap<String, String>> listWithState = db.getFeedbackData();
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         recycleAdapter = new SimpleStringRecyclerViewAdapter(getActivity(), listWithState);
         recyclerView.setAdapter(recycleAdapter);
@@ -78,7 +83,7 @@ public class CoachListFragment extends Fragment {
 
         private final TypedValue mTypedValue = new TypedValue();
         private int mBackground;
-        private List<PhysStateModel> mValues;
+        private ArrayList<HashMap<String, String>> mValues;
 
         public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             public final View mView;
@@ -87,7 +92,7 @@ public class CoachListFragment extends Fragment {
             public final TextView contextDescription;
             public final ImageView levelImage;
             public final RelativeLayout contextDescriptionContainer;
-            Integer physStateId;
+            String physStateTs;
             DatabaseHandler db;
 
             public ViewHolder(View view) {
@@ -101,32 +106,32 @@ public class CoachListFragment extends Fragment {
                 contextDescriptionContainer = (RelativeLayout) view.findViewById(R.id.contextDescriptionContainer);
                 view.setOnClickListener(this);
                 contextDescription = (TextView) view.findViewById(R.id.contextDescriptionTextView);
-                Log.d("LOG", "ViewHolder: level:" + level + "time:" + time);
+                //Log.d("LOG", "ViewHolder: level:" + level + "time:" + time);
 
             }
 
             @Override
             public void onClick(View v) {
-                Log.d("LOG", "GEETTING CLICKED");
-                Log.d("LOG ID", physStateId.toString());
+
 
                 Intent intent = new Intent(v.getContext(), EditPhysStateContext.class);
-                intent.putExtra("PhysStateId", physStateId.toString());
+                intent.putExtra("PhysStateTs", physStateTs);
                 v.getContext().startActivity(intent);
 
             }
         }
 
-        public void update(List<PhysStateModel> items) {
+        public void update(ArrayList<HashMap<String, String>> items) {
             mValues = items;
             notifyDataSetChanged();
         }
 
-        public PhysStateModel getValueAt(int position) {
+        /*public PhysStateModel getValueAt(int position) {
             return mValues.get(position);
         }
+        */
 
-        public SimpleStringRecyclerViewAdapter(Context context, List<PhysStateModel> items) {
+        public SimpleStringRecyclerViewAdapter(Context context, ArrayList<HashMap<String, String>> items) {
             context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
             mBackground = mTypedValue.resourceId;
             mValues = items;
@@ -142,15 +147,20 @@ public class CoachListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.level.setText(mValues.get(position).getLevel());
-            String level = mValues.get(position).getLevel();
-            holder.time.setText(mValues.get(position).getDate());
-            holder.physStateId = mValues.get(position).getId();
-            String contextDescription = mValues.get(position).getContextDescription();
-            if (contextDescription != null || level.equals("3") || level.equals("4") || level.equals("5") ) {
+            holder.level.setText("Stress");
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+            formatter.setTimeZone(getTimeZone("Europe/Amsterdam"));
+            String date = formatter.format(Long.parseLong(mValues.get(position).get("timestamp")));
+            holder.time.setText(date);
+            holder.levelImage.setBackgroundResource(R.drawable.app_1);
+
+            holder.physStateTs = mValues.get(position).get("timestamp");
+            String contextDescription = mValues.get(position).get("context");
+            if (mValues.get(position).get("prediction").equals("1")) {
                 holder.contextDescriptionContainer.setVisibility(View.VISIBLE);
                 if (contextDescription != null) {
-                    holder.contextDescription.setText(mValues.get(position).getContextDescription());
+                    holder.contextDescription.setText(contextDescription);
                 } else {
                     holder.contextDescription.setText("Wat was je aan het doen op dit moment?");
                 }
@@ -159,38 +169,7 @@ public class CoachListFragment extends Fragment {
                 holder.contextDescriptionContainer.setVisibility(View.GONE);
             }
 
-            switch (level) {
-                case "-5":
-                    holder.levelImage.setBackgroundResource(R.drawable.app_min5);
-                    break;
-                case "-4":
-                    holder.levelImage.setBackgroundResource(R.drawable.app_min4);
-                    break;
-                case "-3":
-                    holder.levelImage.setBackgroundResource(R.drawable.app_min3);
-                    break;
-                case "-2":
-                    holder.levelImage.setBackgroundResource(R.drawable.app_min2);
-                    break;
-                case "-1":
-                    holder.levelImage.setBackgroundResource(R.drawable.app_min1);
-                    break;
-                case "1":
-                    holder.levelImage.setBackgroundResource(R.drawable.app_1);
-                    break;
-                case "2":
-                    holder.levelImage.setBackgroundResource(R.drawable.app_2);
-                    break;
-                case "3":
-                    holder.levelImage.setBackgroundResource(R.drawable.app_3);
-                    break;
-                case "4":
-                    holder.levelImage.setBackgroundResource(R.drawable.app_4);
-                    break;
-                case "5":
-                    holder.levelImage.setBackgroundResource(R.drawable.app_5);
-                    break;
-            }
+
         }
 
 

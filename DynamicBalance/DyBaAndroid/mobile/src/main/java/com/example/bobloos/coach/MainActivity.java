@@ -203,10 +203,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
             if (isChecked) {
+                db.deleteAllMaster();
+                db.addMasterData(String.valueOf(user.getUniqueUserId()),String.valueOf(System.currentTimeMillis()),
+                        "75", "0", "0", "1", "1", "1", "10", "0",
+                        "0", null, null, null);
+
                 mApiClient.connect();
                 //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),60000,
                     //    alarmIntent);
-                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),300000,
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),60000,
                         alarmIntent);
                 Intent intent3 = new Intent();
                 intent3.setAction("com.example.sendMessageAlarm");
@@ -260,6 +265,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if(user == null){
             db.addUser(new UserModel());
             user = db.getUser(1);
+
+            String[] context_list = new String[]{"appointment/presentation", "working/studying",
+                    "social situation", "change of schedule/plan", "unknown"};
+
+            for(int i=0; i<context_list.length; i++)
+            {
+                db.addContextData(context_list[i]);
+            }
         }
     }
 

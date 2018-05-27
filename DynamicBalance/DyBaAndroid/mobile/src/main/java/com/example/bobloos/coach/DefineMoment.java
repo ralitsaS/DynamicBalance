@@ -170,6 +170,7 @@ public class DefineMoment extends Service{
             StringEntity entity = new StringEntity(jsondata);
             AsyncHttpClient client = new AsyncHttpClient();
             client.setTimeout(30000);
+            client.setMaxRetriesAndTimeout(0,30000);
             client.post(DefineMoment.this,"http://applab.ai.ru.nl:8081/predict", entity , "application/json", new AsyncHttpResponseHandler() {
 
                 @Override
@@ -181,12 +182,14 @@ public class DefineMoment extends Service{
                 public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                     // called when response HTTP status is "200 OK"
                     String m = new String(response);
+                    String[] separated;
                     //Log.d("php response",m);
                     //prgDialog.hide();
                     Toast.makeText(getApplicationContext(), m, Toast.LENGTH_LONG).show();
                     if(!m.equals("nope"))
                     {
-
+                        separated = m.split(":");
+                        db.addFeedbackData(String.valueOf(user.getUniqueUserId()), separated[0], separated[1], separated[1], null);
                     }
 
                     db.deleteAllMaster();

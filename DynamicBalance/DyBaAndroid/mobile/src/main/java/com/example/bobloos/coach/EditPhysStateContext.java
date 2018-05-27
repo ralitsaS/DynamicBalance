@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.example.bobloos.database.DatabaseHandler;
@@ -21,25 +23,31 @@ import com.example.bobloos.model.PhysStateModel;
 import com.example.bobloos.model.SelfReportModel;
 import com.example.bobloos.model.UserModel;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class EditPhysStateContext extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton fab_add;
     FloatingActionButton fab_delete;
-    //EditText contextDescriptionTextView;
+    EditText context;
+    String text;
+    RadioGroup radioGroup;
+    RadioButton radioButton;
     Spinner contextDescriptionSpinner;
     UserModel user;
-    PhysStateModel physState;
+    HashMap<String, String> single_feedback;
     DatabaseHandler db;
-    String[] context_list = new String[]{"yes: appointment/presentation", "yes: working/studying",
-            "yes: social situation", "yes: change of schedule/plan", "yes: other", "yes: unknown", "no: movement", "no: unknown"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        List<String> context_list = db.getContextData();
         setContentView(R.layout.activity_edit_phys_state_context);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //contextDescriptionTextView = (EditText) findViewById(R.id.phys_context_description_edit_text);
+        context = (EditText)  findViewById(R.id.add_context3);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         contextDescriptionSpinner = (Spinner) findViewById(R.id.context_feedback);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, context_list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -64,11 +72,12 @@ public class EditPhysStateContext extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent intent = getIntent();
-        String phys_state_id = intent.getStringExtra("PhysStateId");
+        String phys_state_ts = intent.getStringExtra("PhysStateTs");
 
         db = new DatabaseHandler(this);
         setUser();
-        setPhysState(phys_state_id);
+        setFeedback(phys_state_ts);
+        //setPhysState(phys_state_id);
     }
 
     private void setUser(){
@@ -78,12 +87,20 @@ public class EditPhysStateContext extends AppCompatActivity {
         }
     }
 
-    private void setPhysState(String phys_state_id){
-        physState = db.getPhysState(Long.valueOf(phys_state_id));
-        if (physState.getContextDescription() != null){
-            //contextDescriptionTextView.setText(physState.getContextDescription());
-            fab_delete.setVisibility(View.VISIBLE);
+
+    private void setFeedback(String ts){
+        single_feedback = db.getSingleFeedback(ts);
+
+        String y = single_feedback.get("y");
+        switch (y){
+            case "1":
+                radioGroup.check(R.id.radioButtonY);
+                break;
+            case "0":
+                radioGroup.check(R.id.radioButtonN);
+                break;
         }
+
     }
 
     @Override
@@ -99,9 +116,20 @@ public class EditPhysStateContext extends AppCompatActivity {
 
     public void saveContextDescription(){
         //String text = contextDescriptionTextView.getText().toString();
-        String text = contextDescriptionSpinner.getSelectedItem().toString();
-        physState.setContextDescription(text);
-        db.updatePhysState(physState);
+        int selectedId = radioGroup.getCheckedRadioButtonId();
+        radioButton = (RadioButton) findViewById(selectedId);
+
+        if(context.getText().toString().equals(""))
+        {
+            text = contextDescriptionSpinner.getSelectedItem().toString();
+        } else
+        {
+            text = context.getText().toString();
+            db.addContextData(text);
+        }
+
+        db.updateFeedback(single_feedback.get("timestamp"), radioButton.getText().toString(), text);
+
         Intent intent = new Intent(EditPhysStateContext.this, MainActivity.class);
         intent.putExtra("pageId", "0");
         EditPhysStateContext.this.startActivity(intent);
@@ -115,8 +143,7 @@ public class EditPhysStateContext extends AppCompatActivity {
                 .setPositiveButton("Ja",  new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        physState.setContextDescription(null);
-                        db.updatePhysState(physState);
+                        db.updateFeedback(single_feedback.get("timestamp"), "1", null);
                         Intent intent = new Intent(EditPhysStateContext.this, MainActivity.class);
                         intent.putExtra("pageId", "0");
                         EditPhysStateContext.this.startActivity(intent);

@@ -21,23 +21,27 @@ import com.example.bobloos.database.DatabaseHandler;
 import com.example.bobloos.model.SelfReportModel;
 import com.example.bobloos.model.UserModel;
 
+import java.util.List;
+
 public class NewSelfReport extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton fab;
-    //EditText storyTextView;
+    EditText context;
     Spinner contextSpinner;
     UserModel user;
     DatabaseHandler db;
-    String[] context_list = new String[]{"appointment/presentation", "working/studying",
-            "social situation", "change of schedule/plan", "other", "unknown"};
+    String text;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        List<String> context_list = db.getContextData();
         setContentView(R.layout.activity_new_self_report);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         contextSpinner = (Spinner) findViewById(R.id.spinner2);
+        context = (EditText)  findViewById(R.id.add_context);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, context_list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contextSpinner.setAdapter(adapter);
@@ -77,8 +81,15 @@ public class NewSelfReport extends AppCompatActivity {
     }
 
     public void saveSelfReport(){
-        //String text = storyTextView.getText().toString();
-        String text = contextSpinner.getSelectedItem().toString();
+        if(context.getText().toString().equals(""))
+        {
+            text = contextSpinner.getSelectedItem().toString();
+        } else
+        {
+            text = context.getText().toString();
+            db.addContextData(text);
+        }
+
         long timeInMs = System.currentTimeMillis();
 
         SelfReportModel selfReport = new SelfReportModel();

@@ -51,6 +51,25 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/textView6" />
 
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/spinner"
+                android:layout_marginTop="18dp"
+                android:text="If the options above do not match your experience you can add your own context clue below. Keep the text to a couple of words. Your context will appear in the drop-down box next time!" />
+
+            <EditText
+                android:id="@+id/add_context2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView9"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
             <EditText
                 android:id="@+id/self_report_edit_text"
                 android:layout_width="wrap_content"

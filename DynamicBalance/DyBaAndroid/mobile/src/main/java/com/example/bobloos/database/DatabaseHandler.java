@@ -22,7 +22,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     // Database Name
     private static final String DATABASE_NAME = "coachDB";
 
@@ -37,6 +37,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_SYNCED = "syncedNums";
     private static final String TABLE_MASTER = "master";
     private static final String TABLE_FEEDBACK = "feedback";
+    private static final String TABLE_CONTEXT = "context_list";
 
     // COMMON column names
     private static final String KEY_ID = "id";
@@ -101,6 +102,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_STEPS = "steps";
     public static final String KEY_USER_HR = "userHR";
     public static final String KEY_USER_STD = "userSTD";
+    public static final String KEY_CONTEXTLIST = "contextlist";
 
 
     public DatabaseHandler(Context context) {
@@ -200,6 +202,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 KEY_Y + " TEXT, "+
                 KEY_CONTEXT + " TEXT); ";
 
+        String CREATE_CONTEXT_TABLE = "CREATE TABLE "+TABLE_CONTEXT+" ( " +
+                KEY_CONTEXTLIST + " TEXT); ";
+
 
         //db.execSQL(CREATE_TABLE_SYNCED);
 
@@ -213,6 +218,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_SYNCED);
         db.execSQL(CREATE_MASTER_TABLE);
         db.execSQL(CREATE_FEEDBACK_TABLE);
+        db.execSQL(CREATE_CONTEXT_TABLE);
     }
 
     @Override
@@ -332,12 +338,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return FeedbackDataAll;
     }
 
+    public HashMap<String, String> getSingleFeedback(String ts) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT  * FROM " + TABLE_FEEDBACK + " WHERE " + KEY_TIMESTAMP + " = " + ts;
+        HashMap<String, String> Feedback = new HashMap<String, String>();
+        Cursor cursor = db.rawQuery(query, null);
 
-    public void updateFeedback(String timestamp, String prediction, String y, String context){
+        if (cursor.moveToFirst()) {
+
+            Feedback.put("uni_id", cursor.getString(0));
+            Feedback.put("timestamp", cursor.getString(1));
+            Feedback.put("prediction", cursor.getString(2));
+            Feedback.put("y", cursor.getString(3));
+            Feedback.put("context", cursor.getString(4));
+        }
+
+        return Feedback;
+    }
+
+    public void updateFeedback(String timestamp, String y, String context){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_PREDICTION, prediction);
         values.put(KEY_Y, y);
         values.put(KEY_CONTEXT, context);
 
@@ -352,6 +374,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[]{timestamp}); //selections args
     }
 
+    public void addContextData(String context) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_CONTEXT, context);
+        db.insert(TABLE_CONTEXT, null, values);
+        db.close();
+    }
+
+    public List<String> getContextData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT  * FROM " + TABLE_CONTEXT;
+        List<String> ContextData = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                ContextData.add(cursor.getString(0));
+
+            } while (cursor.moveToNext());
+        }
+
+        return ContextData;
+    }
 
     // ALL CALLS RELATED TO ADDING MONITOR DATA
 

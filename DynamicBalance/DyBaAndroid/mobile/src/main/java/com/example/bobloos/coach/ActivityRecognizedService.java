@@ -69,7 +69,7 @@ public class ActivityRecognizedService extends IntentService {
                 case DetectedActivity.IN_VEHICLE: {
                     Log.e( "ActivityRecogition", "In Vehicle: " + activity.getConfidence() );
                     if( activity.getConfidence() >= 75 ) {
-                        curActivity = "IN VEHICLE";
+                        curActivity = "7";
                         curConfidence = String.valueOf(activity.getConfidence());
                         mNotifyBuilder.setContentText("In Vehicle " + activity.getConfidence())
                                 .setNumber(++numMessages);
@@ -84,7 +84,7 @@ public class ActivityRecognizedService extends IntentService {
                 case DetectedActivity.ON_BICYCLE: {
                     Log.e( "ActivityRecogition", "On Bicycle: " + activity.getConfidence() );
                     if( activity.getConfidence() >= 75 ) {
-                        curActivity = "ON BICYCLE";
+                        curActivity = "6";
                         curConfidence = String.valueOf(activity.getConfidence());
 
                         mNotifyBuilder.setContentText("On Bicycle " + activity.getConfidence())
@@ -100,7 +100,7 @@ public class ActivityRecognizedService extends IntentService {
                 case DetectedActivity.ON_FOOT: {
                     Log.e( "ActivityRecogition", "On Foot: " + activity.getConfidence() );
                     if( activity.getConfidence() >= 75 ) {
-                        curActivity = "ON FOOT";
+                        curActivity = "4";
                         curConfidence = String.valueOf(activity.getConfidence());
                         mNotifyBuilder.setContentText("On Foot " + activity.getConfidence())
                                 .setNumber(++numMessages);
@@ -115,7 +115,7 @@ public class ActivityRecognizedService extends IntentService {
                 case DetectedActivity.RUNNING: {
                     Log.e( "ActivityRecogition", "Running: " + activity.getConfidence() );
                     if( activity.getConfidence() >= 75 ) {
-                        curActivity = "RUNNING";
+                        curActivity = "5";
                         curConfidence = String.valueOf(activity.getConfidence());
                         mNotifyBuilder.setContentText("Running " + activity.getConfidence())
                                 .setNumber(++numMessages);
@@ -130,7 +130,7 @@ public class ActivityRecognizedService extends IntentService {
                 case DetectedActivity.STILL: {
                     Log.e( "ActivityRecogition", "Still: " + activity.getConfidence() );
                     if( activity.getConfidence() >= 75 ) {
-                        curActivity = "STILL";
+                        curActivity = "1";
                         curConfidence = String.valueOf(activity.getConfidence());
                         mNotifyBuilder.setContentText("Still " + activity.getConfidence())
                                 .setNumber(++numMessages);
@@ -145,7 +145,7 @@ public class ActivityRecognizedService extends IntentService {
                 case DetectedActivity.TILTING: {
                     Log.e( "ActivityRecogition", "Tilting: " + activity.getConfidence() );
                     if( activity.getConfidence() >= 75 ) {
-                        curActivity = "TILTING";
+                        curActivity = "2";
                         curConfidence = String.valueOf(activity.getConfidence());
                         mNotifyBuilder.setContentText("Tilting " + activity.getConfidence())
                                 .setNumber(++numMessages);
@@ -160,7 +160,7 @@ public class ActivityRecognizedService extends IntentService {
                 case DetectedActivity.WALKING: {
                     Log.e( "ActivityRecogition", "Walking: " + activity.getConfidence() );
                     if( activity.getConfidence() >= 75 ) {
-                        curActivity = "WALKING";
+                        curActivity = "3";
                         curConfidence = String.valueOf(activity.getConfidence());
                         mNotifyBuilder.setContentText("Walking " + activity.getConfidence())
                                 .setNumber(++numMessages);
