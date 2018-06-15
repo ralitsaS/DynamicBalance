@@ -36,6 +36,7 @@ public class NewSelfReport extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DatabaseHandler(this);
         List<String> context_list = db.getContextData();
         setContentView(R.layout.activity_new_self_report);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -58,7 +59,7 @@ public class NewSelfReport extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        db = new DatabaseHandler(this);
+
         setUser();
     }
 

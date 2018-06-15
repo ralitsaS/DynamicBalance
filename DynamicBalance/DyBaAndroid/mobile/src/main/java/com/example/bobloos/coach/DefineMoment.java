@@ -149,11 +149,7 @@ public class DefineMoment extends Service{
                 null, null, null, null, null, null, null,
                 String.valueOf(moment_mode), String.valueOf(userAverageHr), String.valueOf(interval));
 
-        Intent intentsend = new Intent();
-        intentsend.setAction("com.example.sendMessageAlarm");
-        intentsend.putExtra("moment", String.valueOf(moment_mode));
 
-        DefineMoment.this.sendBroadcast(intentsend);
 
         sendToServer();
 
@@ -189,6 +185,15 @@ public class DefineMoment extends Service{
                     if(!m.equals("nope"))
                     {
                         separated = m.split(":");
+                        if(separated[1].equals("1")){
+                            Intent intentsend = new Intent();
+                            intentsend.setAction("com.example.sendMessageAlarm");
+                            intentsend.putExtra("moment", "1");
+
+                            DefineMoment.this.sendBroadcast(intentsend);
+                        }
+
+
                         db.addFeedbackData(String.valueOf(user.getUniqueUserId()), separated[0], separated[1], separated[1], null);
                     }
 

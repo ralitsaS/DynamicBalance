@@ -123,6 +123,14 @@ public class SensorReceiverService extends WearableListenerService {
             switch (sensorType){
                 case 21:
                     avgHR = String.valueOf(values[0]);
+
+                    Intent intent_base = new Intent();
+                    intent_base.setAction("com.example.Broadcast_Base");
+                    intent_base.putExtra("HR", values);
+                    intent_base.putExtra("ACCR", accuracy);
+                    //intent_base.putExtra("TIME", event.timestamp);
+                    sendBroadcast(intent_base);
+
                     break;
                 case 1:
                     acceleration = String.valueOf(Math.sqrt(Math.pow(values[0],2) + Math.pow(values[1],2) + Math.pow(values[2],2)));
@@ -130,15 +138,30 @@ public class SensorReceiverService extends WearableListenerService {
                 case 19:
                     HashMap<String, String> last_step_data = db.getLastStepCount();
                     float steps_per_min = 0;
-                    if(last_step_data!=null){
+                    if(last_step_data.get("timestamp")!=null){
+
+                        String str_steps = last_step_data.get("steps");
+
                         long last_ts = Long.parseLong(last_step_data.get("timestamp"));
-                        int last_steps = Integer.parseInt(last_step_data.get("steps"));
+                        Log.e("LAST TS", String.valueOf(last_ts));
+                        Log.e("NOW TS", String.valueOf(timestamp));
+                        double minutes = (timestamp-last_ts)/60000.0;
+
+
+                        int last_steps = Integer.parseInt(str_steps.replace("[","").replace(".0]",""));
+                        Log.e("LAST STEPS", String.valueOf(last_steps));
+                        Log.e("NOW STEPS", String.valueOf(values[0]));
                         if(values[0]>=last_steps){
-                            steps_per_min = (values[0]-last_steps)/((timestamp-last_ts)/60000);
-                        }else steps_per_min = (values[0])/((timestamp-last_ts)/60000);
+                            steps_per_min = (values[0]-last_steps)/(float)minutes;
+                        }else steps_per_min = (values[0])/(float)minutes;
+
+                        Log.e("TS DIFFERENCE", String.valueOf((float)minutes));
+
+
                     }
 
                     steps = String.valueOf(steps_per_min);
+                    Log.e("STEPS PER MIN", steps);
                     break;
             }
 

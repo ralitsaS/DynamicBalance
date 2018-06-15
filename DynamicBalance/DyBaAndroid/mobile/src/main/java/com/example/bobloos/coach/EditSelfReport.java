@@ -38,6 +38,7 @@ public class EditSelfReport extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DatabaseHandler(this);
         List<String> context_list = db.getContextData();
         setContentView(R.layout.activity_edit_self_report);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -68,7 +69,7 @@ public class EditSelfReport extends AppCompatActivity {
 
         Intent intent = getIntent();
         String self_report_id = intent.getStringExtra("SelfReportId");
-        db = new DatabaseHandler(this);
+
         setUser();
         setSelfReport(self_report_id);
     }

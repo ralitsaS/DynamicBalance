@@ -188,7 +188,7 @@ public class SettingsActivity extends AppCompatActivity {
         db.updateUser(user);
 
         Context context = getApplicationContext();
-        CharSequence text = "Jouw instelingen zijn opgeslagen!";
+        CharSequence text = "New settings are saved!";
         int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(context, text, duration);
@@ -373,6 +373,7 @@ public class SettingsActivity extends AppCompatActivity {
             StringEntity entity = new StringEntity(jsondata);
             AsyncHttpClient client = new AsyncHttpClient();
             client.setTimeout(30000);
+            client.setMaxRetriesAndTimeout(0,30000);
             client.post(SettingsActivity.this,"http://applab.ai.ru.nl:8081/train", entity , "application/json", new AsyncHttpResponseHandler() {
 
                 @Override

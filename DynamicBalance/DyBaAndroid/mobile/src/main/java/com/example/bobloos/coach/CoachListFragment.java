@@ -59,10 +59,15 @@ public class CoachListFragment extends Fragment {
     }
 
     void refreshItems() {
-        //List <PhysStateModel> items = db.getAllPhysStates();
+        ArrayList<HashMap<String,String>> items_1 = new ArrayList<>();
         ArrayList<HashMap<String, String>> pred_items = db.getFeedbackData();
         if (pred_items.size() != 0) {
-            recycleAdapter.update(pred_items);
+            for(int i=0; i<pred_items.size(); i++){
+                if(pred_items.get(i).get("prediction").equals("1"))
+                    items_1.add(pred_items.get(i));
+            }
+
+            recycleAdapter.update(items_1);
         }
         onItemsLoadComplete();
     }
@@ -73,8 +78,17 @@ public class CoachListFragment extends Fragment {
 
     private void setupRecyclerView(RecyclerView recyclerView) {
         ArrayList<HashMap<String, String>> listWithState = db.getFeedbackData();
+        ArrayList<HashMap<String, String>> items_1 = new ArrayList<>();
+        if(listWithState.size() > 0){
+            for(int i=0; i<listWithState.size(); i++){
+                //if(listWithState.get(i).get("prediction").is)
+                if(listWithState.get(i).get("prediction") != null && listWithState.get(i).get("prediction").equals("1"))
+                    items_1.add(listWithState.get(i));
+            }
+        }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-        recycleAdapter = new SimpleStringRecyclerViewAdapter(getActivity(), listWithState);
+        recycleAdapter = new SimpleStringRecyclerViewAdapter(getActivity(), items_1);
         recyclerView.setAdapter(recycleAdapter);
     }
 
@@ -157,16 +171,12 @@ public class CoachListFragment extends Fragment {
 
             holder.physStateTs = mValues.get(position).get("timestamp");
             String contextDescription = mValues.get(position).get("context");
-            if (mValues.get(position).get("prediction").equals("1")) {
-                holder.contextDescriptionContainer.setVisibility(View.VISIBLE);
-                if (contextDescription != null) {
-                    holder.contextDescription.setText(contextDescription);
-                } else {
-                    holder.contextDescription.setText("Wat was je aan het doen op dit moment?");
-                }
+
+            holder.contextDescriptionContainer.setVisibility(View.VISIBLE);
+            if (contextDescription != null) {
+                holder.contextDescription.setText(contextDescription);
             } else {
-                holder.contextDescription.setText(null);
-                holder.contextDescriptionContainer.setVisibility(View.GONE);
+                holder.contextDescription.setText("No context");
             }
 
 

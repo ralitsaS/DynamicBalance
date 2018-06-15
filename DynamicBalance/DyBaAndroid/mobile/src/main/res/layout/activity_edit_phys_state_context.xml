@@ -37,13 +37,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/appbar"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="60dp">
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Do you think this stress level is accurate for you? Pick a reason why:" />
+                android:text="Is the system accurate in detecting a stressful moment? Optionally, choose a context to describe the situation:" />
 
             <RadioGroup
 

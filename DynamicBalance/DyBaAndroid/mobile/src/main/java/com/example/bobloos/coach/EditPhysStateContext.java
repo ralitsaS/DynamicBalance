@@ -42,7 +42,14 @@ public class EditPhysStateContext extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DatabaseHandler(this);
         List<String> context_list = db.getContextData();
+        Log.d("CONTEXT SIZE",String.valueOf(context_list.size()));
+        for(int i=0;i<context_list.size();i++)
+        {
+            Log.d("CONTEXT LIST",context_list.get(i));
+        }
+
         setContentView(R.layout.activity_edit_phys_state_context);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -74,7 +81,7 @@ public class EditPhysStateContext extends AppCompatActivity {
         Intent intent = getIntent();
         String phys_state_ts = intent.getStringExtra("PhysStateTs");
 
-        db = new DatabaseHandler(this);
+
         setUser();
         setFeedback(phys_state_ts);
         //setPhysState(phys_state_id);
@@ -118,6 +125,7 @@ public class EditPhysStateContext extends AppCompatActivity {
         //String text = contextDescriptionTextView.getText().toString();
         int selectedId = radioGroup.getCheckedRadioButtonId();
         radioButton = (RadioButton) findViewById(selectedId);
+        int y = radioButton.getText().toString().equals("Accurate") ? 1:0;
 
         if(context.getText().toString().equals(""))
         {
@@ -128,7 +136,7 @@ public class EditPhysStateContext extends AppCompatActivity {
             db.addContextData(text);
         }
 
-        db.updateFeedback(single_feedback.get("timestamp"), radioButton.getText().toString(), text);
+        db.updateFeedback(single_feedback.get("timestamp"), String.valueOf(y), text);
 
         Intent intent = new Intent(EditPhysStateContext.this, MainActivity.class);
         intent.putExtra("pageId", "0");

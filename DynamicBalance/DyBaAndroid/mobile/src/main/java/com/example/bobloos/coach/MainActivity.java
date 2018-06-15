@@ -96,10 +96,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setUser();
 
 
-        if (user.getAvgHeartRate() == null || user.getStdfHeartRate() == null) {
-            Intent intent = new Intent(MainActivity.this, BaseLineInitActivity.class);
-            MainActivity.this.startActivity(intent);
-        } else {
+
             viewPager = (ViewPager) findViewById(R.id.viewpager);
             setupActivity();
             Intent intent = getIntent();
@@ -107,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             if (pagerViewId != null){
                 viewPager.setCurrentItem(Integer.valueOf(pagerViewId));
             }
-        }
+
 
 
         mApiClient = new GoogleApiClient.Builder(this)
@@ -142,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         // register receivers
         try{
             MainActivity.this.unregisterReceiver(mMessageReceiver);
-            MainActivity.this.unregisterReceiver(measureMomentAlarmReceiver);
             Log.d("LOG", "UNREGISTRERD ON CREATE");
 
         } catch (Throwable e) {
@@ -150,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         try{
             MainActivity.this.unregisterReceiver(mMessageReceiver);
-            MainActivity.this.unregisterReceiver(measureMomentAlarmReceiver);
             Log.d("LOG", "UNREGISTRERD ON CREATE");
 
         } catch (Throwable e) {
@@ -160,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         Log.d("LOG", "CALLING ON CREATE");
         MainActivity.this.registerReceiver(mMessageReceiver, new IntentFilter("com.example.Broadcast"));
         MainActivity.this.registerReceiver(mMessageReceiver, new IntentFilter("com.example.Broadcast2"));
-        MainActivity.this.registerReceiver(measureMomentAlarmReceiver, new IntentFilter("com.example.measureMomentAlarm"));
 
 
 
@@ -181,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         coachSwitch.setOnCheckedChangeListener(checkBtnChangeCoachMode);
         coachSwitchTextView = (TextView) findViewById(R.id.coach_switch_text_view);
         if (coachSwitchStateChecked==true){
-            coachSwitchTextView.setText("Coaching staat aan");
+            coachSwitchTextView.setText("Coaching is on");
         }
         // start new intent
         Intent intent = new Intent();
@@ -221,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
                 sharedPrefsEditor.putBoolean("coachSwitchStateChecked", true);
                 long timeInMs = System.currentTimeMillis();
-                coachSwitchTextView.setText("Coaching staat aan");
+                coachSwitchTextView.setText("Coaching is on");
 
                 lastMeasurementTime = System.currentTimeMillis();
                 remoteSensorManager.startMeasurement();
@@ -240,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 alarmIntent.cancel();
                 // stop measurement of baseline
                 sharedPrefsEditor.putBoolean("coachSwitchStateChecked", false);
-                coachSwitchTextView.setText("Coaching staat uit");
+                coachSwitchTextView.setText("Coaching is off");
                 Intent intent = new Intent();
                 intent.setAction("com.example.Broadcast1");
                 intent.putExtra("START_TIME", 0L); // clear millisec time
@@ -380,132 +374,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     };
 
-    // handler for received intents
-    private BroadcastReceiver measureMomentAlarmReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (processingAlarmIntent==false){
-                processingAlarmIntent=true;
-                defineMoment();
-                            Log.d("measureMmoentALARM", "GOT Single MESSAGE");
 
-            }
-        }
-    };
-
-    private void defineMoment(){
-        List<HeartRateDataModel> latest_ten_measures = db.getLatestMeasures();
-        int count = latest_ten_measures.size();
-        float totalHR = 0;
-        for (int i = 0; i < count; i++) {
-            float hr = Float.valueOf(latest_ten_measures.get(i).getHeartRate());
-            Log.d("DEFINE MOMENT, HR TIME", latest_ten_measures.get(i).getMeasurementTime().toString());
-            totalHR += hr;
-        }
-
-        float avgHr = totalHR/count;
-        float userAverageHr = Float.valueOf(user.getAvgHeartRate());
-        float userStdfHr = Float.valueOf(user.getStdfHeartRate());
-        float hrDiff = avgHr - userAverageHr;
-
-        Log.d("AVGHR", String.valueOf(avgHr));
-        Log.d("useraveragdeHR", String.valueOf(userAverageHr));
-        Log.d("userSTDFhr", String.valueOf(userStdfHr));
-        Log.d("hrDiff", String.valueOf(hrDiff));
-
-        int moment_mode = 999;
-        Log.d("Use Sensitivity", getSensitivity().toString());
-
-        double interval = (userStdfHr * getSensitivity());
-        Log.d("INTERVAL", String.valueOf(interval));
-
-        Integer previousMomentState = sharedPrefs.getInt("momentState", 1);
-
-        if(hrDiff <= interval*-5){
-            sharedPrefsEditor.putInt("momentState", -5);
-            Log.d("Moment", "in state -5");
-            moment_mode = -5;
-        } else if (hrDiff > interval*-5 && hrDiff <= (interval*-4) ){
-            sharedPrefsEditor.putInt("momentState", -4);
-            moment_mode = -4;
-            Log.d("Moment", "in state -4");
-        } else if (hrDiff > interval*-4 && hrDiff <= (interval*-3) ){
-            sharedPrefsEditor.putInt("momentState", -3);
-            moment_mode = -3;
-            Log.d("Moment", "in state -3");
-        } else if (hrDiff > interval*-3 && hrDiff <= (interval*-2) ){
-            sharedPrefsEditor.putInt("momentState", -2);
-            moment_mode = -2;
-            Log.d("Moment", "in state -2");
-        } else if (hrDiff > interval*-2 && hrDiff <= (interval*-1) ){
-            sharedPrefsEditor.putInt("momentState", -1);
-            moment_mode = -1;
-            Log.d("Moment", "in state -1");
-        } else if (hrDiff > interval*-1 && hrDiff <= (interval) ){
-            sharedPrefsEditor.putInt("momentState", 1);
-            moment_mode = 1;
-            Log.d("Moment", "in state 1");
-        } else if (hrDiff > interval && hrDiff <= (interval*2) ){
-            sharedPrefsEditor.putInt("momentState", 2);
-            moment_mode = 2;
-            Log.d("Moment", "in state 2");
-        } else if (hrDiff >  (interval*2) && hrDiff <= (interval*3) ){
-            sharedPrefsEditor.putInt("momentState", 3);
-            moment_mode = 3;
-            Log.d("Moment", "in state 3");
-        } else if (hrDiff > (interval*3) && hrDiff <= (interval*4 )) {
-            sharedPrefsEditor.putInt("momentState", 4);
-            moment_mode = 4;
-            Log.d("Moment", "in state 4");
-        } else if (hrDiff > (interval*4) ) {
-            sharedPrefsEditor.putInt("momentState", 5);
-            moment_mode = 5 ;
-            Log.d("Moment", "in state 5");
-        }
-
-        sharedPrefsEditor.commit();
-
-        if (previousMomentState == moment_mode) {
-            Log.d("MEASUREER", "NO NEW STATE");
-            Log.d("MEASUREER", previousMomentState.toString());
-            Log.d("MEASUREER", String.valueOf(moment_mode));
-        }else{
-            Log.d("MEASUREER", "NEW STATE!!!!");
-            Log.d("MEASUREER", previousMomentState.toString());
-            Log.d("MEASUREER", String.valueOf(moment_mode));
-
-            long timeInMs = System.currentTimeMillis();
-            physState = new PhysStateModel();
-            physState.setLevel(String.valueOf(moment_mode));
-            physState.setUserId(String.valueOf(user.getId()));
-            physState.setStateTimeStamp(String.valueOf(timeInMs));
-
-            db.addPhysState(physState);
-
-
-        }
-
-        Intent intent = new Intent();
-        intent.setAction("com.example.sendMessageAlarm");
-        intent.putExtra("moment", String.valueOf(moment_mode));
-
-        MainActivity.this.sendBroadcast(intent);
-
-        processingAlarmIntent = false;
-    }
-
-    public Double getSensitivity(){
-        String sensitivity = user.getSensitivityPref();
-        switch (sensitivity){
-            case "1":
-                return 1.5;
-            case "2":
-                return 1.0;
-            case "3":
-                return 0.5;
-        }
-        return null;
-    }
 
 
     static class Adapter extends FragmentPagerAdapter {

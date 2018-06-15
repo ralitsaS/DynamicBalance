@@ -51,7 +51,7 @@ public class BaseLineService extends Service{
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         hrReceiver = this.hrMessageReceiver;
-        BaseLineService.this.registerReceiver(hrReceiver, new IntentFilter("com.example.Broadcast"));
+        BaseLineService.this.registerReceiver(hrReceiver, new IntentFilter("com.example.Broadcast_Base"));
 
         long timeInMs = System.currentTimeMillis();
         sharedPrefsEditor.putLong("baseLineTimeStamp", timeInMs);
@@ -80,7 +80,7 @@ public class BaseLineService extends Service{
                 // get extras
                 float[] heartRate = intent.getFloatArrayExtra("HR");
                 int accuracy = intent.getIntExtra("ACCR", 0);
-                int sensorType = intent.getIntExtra("SENSOR_TYPE", 0);
+                //int sensorType = intent.getIntExtra("SENSOR_TYPE", 0);
                 int userId = user.getId();
                 long timeInMs = System.currentTimeMillis();
 
@@ -91,7 +91,7 @@ public class BaseLineService extends Service{
                 hrModel.setHeartRate(String.valueOf(heartRate[0]));
                 hrModel.setMeasurementTime(timeInMs);
                 Log.d("ReceiverBaseline", "Got HR: " + heartRate[0] + ". Got Accuracy: " + accuracy);
-                db.addHeartRateData(hrModel);
+                //db.addHeartRateData(hrModel);
                 baseLineEnoughMeasuresFromMoment();
             } catch (Exception e) {
             }

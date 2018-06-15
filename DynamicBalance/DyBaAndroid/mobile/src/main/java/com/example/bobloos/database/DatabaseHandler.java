@@ -22,7 +22,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
     // Database Name
     private static final String DATABASE_NAME = "coachDB";
 
@@ -233,6 +233,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SYNCED);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MASTER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEEDBACK);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTEXT);
         this.onCreate(db);
     }
 
@@ -378,7 +379,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_CONTEXT, context);
+        values.put(KEY_CONTEXTLIST, context);
         db.insert(TABLE_CONTEXT, null, values);
         db.close();
     }
