@@ -1,13 +1,14 @@
 import numpy as np
 import pandas as pd
 from scipy.stats import mode
+import os.path
+import os
 
 def preprocess_data(filename):
     df_received = pd.read_csv(filename)
     
-    di = {'STILL':1, 'TILTING':2, 'WALKING':3, 'RUNNING':4, 'ON BICYCLE':5,
-    'IN VEHICLE':6, 'ON FOOT':7}
-    df_received['activity'].replace(di, inplace=True)
+    if pd.isnull(df_received['steps_per_min']).iloc[-1]:
+        df_received['steps_per_min'].iloc[-1] = 0
     
     df_received['heart_rate'] = df_received['heart_rate'].fillna(method = 'ffill').fillna(method = 'bfill')
     df_received['acceleration'] = df_received['acceleration'].fillna(method = 'ffill').fillna(method = 'bfill')
@@ -32,23 +33,32 @@ def aggregate_data(uni_id):
     
     
     agg_data = []
-    agg_data.append({'uni_id': df_section['uni_id'].index[-1],'timestamp': df_section['timestamp'].index[-1],'meanHR': df_section['heart_rate'].mean(), 'minHR': min(df_section['heart_rate']), 'maxHR': max(df_section['heart_rate']), 'stdHR': df_section['heart_rate'].std(), 'avgchngHR': abs(df_section['heart_rate'].diff()).mean(), 'hour': mode(df_section['hour'])[0][0], 'day': df_section['day'].index[-1], 'stepsPerMin': df_section['steps_per_min'].mean(), 'meanActivity': df_section['activity'].mean(), 'modeActivity': mode(df_section['activity'])[0][0], 'changedActivity': (df_section['activity'].diff() != 0).sum()-1, 'meanAccel': df_section['acceleration'].mean(), 'stdAccel': df_section['acceleration'].std(), 'temp': mode(df_section['temp'])[0][0], 'humidity': mode(df_section['humidity'])[0][0], 'clouds': mode(df_section['clouds'])[0][0], 'userHR': df_section['userHR'].index[-1], 'userSTD': df_section['userSTD'].index[-1], 'level': df_section['level'].index[-1]})
+    agg_data.append({'uni_id': df_section['uni_id'].iloc[-1],'timestamp': df_section['timestamp'].iloc[-1],'meanHR': df_section['heart_rate'].mean(), 'minHR': min(df_section['heart_rate']), 'maxHR': max(df_section['heart_rate']), 'stdHR': df_section['heart_rate'].std(), 'avgchngHR': abs(df_section['heart_rate'].diff()).mean(), 'hour': mode(df_section['hour'])[0][0], 'day': df_section['day'].iloc[-1], 'stepsPerMin': df_section['steps_per_min'].mean(), 'meanActivity': df_section['activity'].mean(), 'modeActivity': mode(df_section['activity'])[0][0], 'changedActivity': (df_section['activity'].diff() != 0).sum()-1, 'meanAccel': df_section['acceleration'].mean(), 'stdAccel': df_section['acceleration'].std(), 'temp': mode(df_section['temp'])[0][0], 'humidity': mode(df_section['humidity'])[0][0], 'clouds': mode(df_section['clouds'])[0][0], 'userHR': df_section['userHR'].iloc[-1], 'userSTD': df_section['userSTD'].iloc[-1], 'level': df_section['level'].iloc[-1]})
     
-    df_data_5min = pd.DataFrame(agg_data)
+    df_data_5min = pd.DataFrame(agg_data, columns=['uni_id', 'timestamp', 'meanHR', 'minHR', 'maxHR', 'stdHR', 'avgchngHR', 'hour', 'day', 'stepsPerMin', 'meanActivity', 'modeActivity', 'changedActivity', 'meanAccel', 'stdAccel', 'temp', 'humidity', 'clouds', 'userHR', 'userSTD', 'level'])
+    
+    df_data_5min = df_data_5min.fillna('0')
+    
+    df_data = df_data.iloc[-1,:].to_frame().transpose()
+    os.remove(rd_filename)
+    df_data.to_csv(rd_filename, encoding='utf-8', index=False)
+    
     agg_filename = 'agg_data_' + uni_id + '.csv'
     
     ans = "nope"
-    if os.path.exists(agg_filename):
-        with open(agg_filename) as f:
-            df_data_5min.to_csv(f, header=False, index=False)
-        df_agg_data = pd.read_csv(agg_filename)
-        if df_agg_data.shape[0] >= 3:
-            df_last_sample = df_agg_data.tail(3)
-            make_features(df_last_sample, uni_id)
-            ans = df_last_sample['timestamp'].iloc[-1]
-        
-    else:
-        df_data_5min.to_csv(agg_filename, encoding='utf-8', index=False)
+    
+    if not (df_data_5min['stdHR'].iloc[0]=='0'):
+        if os.path.exists(agg_filename):
+            with open(agg_filename, 'a') as f:
+                df_data_5min.to_csv(f, header=False, index=False)
+            df_agg_data = pd.read_csv(agg_filename)
+            if df_agg_data.shape[0] >= 3:
+                df_last_sample = df_agg_data.tail(3)
+                make_features(df_last_sample, uni_id)
+                ans = df_last_sample['timestamp'].iloc[-1]
+            
+        else:
+            df_data_5min.to_csv(agg_filename, encoding='utf-8', index=False)
         
     return ans
 

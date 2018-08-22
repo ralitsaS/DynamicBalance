@@ -1,5 +1,7 @@
 #!/usr/bin/python
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+from SocketServer import ThreadingMixIn
+import threading
 from os import curdir, sep
 import cgi
 import simplejson
@@ -46,11 +48,12 @@ class myHandler(BaseHTTPRequestHandler):
     if self.path=="/predict":
       datastr = self.rfile.read(int(self.headers['Content-Length']))
       data = simplejson.loads(datastr)
-      df_data = pd.DataFrame.from_dict(data, orient="columns")
-      uni_id = df_data.iloc[0,0].astype('str')
+      df_data = pd.DataFrame(data, columns=['uni_id', 'timestamp', 'heart_rate', 'acceleration', 'steps_per_min', 'hour', 'day', 'activity', 'temp', 'humidity', 'clouds', 'level', 'userHR', 'userSTD'])
+      uni_id = df_data.iloc[0,0]
+      
       rd_filename = 'received_data_' + uni_id + '.csv'
       if os.path.exists(rd_filename):
-        with open(rd_filename) as f:
+        with open(rd_filename, 'a') as f:
           df_data.to_csv(f, header=False, index=False)
       else:
         df_data.to_csv(rd_filename, encoding='utf-8', index=False)
@@ -59,10 +62,12 @@ class myHandler(BaseHTTPRequestHandler):
       received_data.preprocess_data(rd_filename)
       print "preprocess received data"
       ans = received_data.aggregate_data(uni_id)
+      print ans
       
       if ans != "nope":
         prediction = ml_model.get_prediction(uni_id, ans)
-        ans = prediction
+        print prediction
+        ans = str(int(ans)) + ":" + str(prediction)
 
       self.send_response(200)
       self.end_headers()
@@ -71,11 +76,14 @@ class myHandler(BaseHTTPRequestHandler):
     if self.path=="/train":
       datastr = self.rfile.read(int(self.headers['Content-Length']))
       data = simplejson.loads(datastr)
-      df_data = pd.DataFrame.from_dict(data, orient="columns")
-      uni_id = df_data.iloc[0,0].astype('str')
+      df_data = pd.DataFrame(data, columns=['uni_id', 'timestamp', 'prediction', 'y', 'context'])
+      uni_id = df_data.iloc[0,0]
+      
       
       df_feedback = df_data.loc[df_data['y'].notnull(), ['timestamp', 'y', 'context']]
+        
       df_report = df_data.loc[df_data['y'].isnull(), ['timestamp', 'context']]
+      
       
       ml_model.retrain_model(uni_id, df_feedback, df_report)
       
@@ -85,10 +93,15 @@ class myHandler(BaseHTTPRequestHandler):
 
     return
       
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    """ This class allows to handle requests in separated threads.
+        No further content needed, don't touch this. """
+
+
 try:
   #Create a web server and define the handler to manage the
   #incoming request
-  server = HTTPServer(('', PORT_NUMBER), myHandler)
+  server = ThreadedHTTPServer(('', PORT_NUMBER), myHandler)
   print 'Started httpserver on port ' , PORT_NUMBER
   
   #Wait forever for incoming htto requests
