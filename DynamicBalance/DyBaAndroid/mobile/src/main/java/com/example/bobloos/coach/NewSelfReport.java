@@ -105,5 +105,6 @@ public class NewSelfReport extends AppCompatActivity {
         Intent intent = new Intent(NewSelfReport.this, MainActivity.class);
         intent.putExtra("pageId", "1");
         NewSelfReport.this.startActivity(intent);
+        NewSelfReport.this.finish();
     }
 }

@@ -50,6 +50,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -95,6 +96,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setPrefHandler();
         setUser();
 
+        mApiClient = new GoogleApiClient.Builder(this)
+                .addApi(ActivityRecognition.API)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
 
 
             viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -107,12 +115,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
 
-        mApiClient = new GoogleApiClient.Builder(this)
-                .addApi(ActivityRecognition.API)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
+
 
         //mApiClient.connect();
         checkAppPermission();
@@ -170,13 +173,83 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
 
         coachSwitch = (Switch) findViewById(R.id.coachSwitch);
-        boolean coachSwitchStateChecked = sharedPrefs.getBoolean("coachSwitchStateChecked", false);
-        coachSwitch.setChecked(coachSwitchStateChecked);
-        coachSwitch.setOnCheckedChangeListener(checkBtnChangeCoachMode);
         coachSwitchTextView = (TextView) findViewById(R.id.coach_switch_text_view);
-        if (coachSwitchStateChecked==true){
-            coachSwitchTextView.setText("Coaching is on");
-        }
+
+        CompoundButton.OnCheckedChangeListener checkBtnChangeCoachMode = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+
+                if(coachSwitch.isShown()){
+                    if (isChecked) {
+                        long timeInMs = System.currentTimeMillis();
+
+                        db.deleteAllMaster();
+                        db.addMasterData(String.valueOf(user.getUniqueUserId()),String.valueOf(System.currentTimeMillis()),
+                                "75", "0", "0", "1", "1", "1", "10", "0",
+                                "0", null, null, null);
+
+                        mApiClient.connect();
+                        db.replaceSwitchAndTS("on", String.valueOf(timeInMs));
+                        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),60000,
+                        //        alarmIntent);
+                        Intent intent3 = new Intent();
+                        intent3.setAction("com.example.sendMessageAlarm");
+                        intent3.putExtra("moment", String.valueOf(1));
+                        sharedPrefsEditor.putInt("momentState", 1);
+                        MainActivity.this.sendBroadcast(intent3);
+
+                        sharedPrefsEditor.putBoolean("coachSwitchStateChecked", true);
+
+                        coachSwitchTextView.setText("Coaching is on");
+
+                        lastMeasurementTime = System.currentTimeMillis();
+                        remoteSensorManager.startMeasurement();
+                        Intent intent = new Intent();
+                        intent.setAction("com.example.Broadcast1");
+                        intent.putExtra("START_TIME", lastMeasurementTime); // get current millisec time
+                        MainActivity.this.sendBroadcast(intent);
+                        SharedPreferences pref = MainActivity.this.getSharedPreferences("START_TIME", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putLong("START_TIME", lastMeasurementTime);
+                        editor.apply();
+                    } else {
+
+                        if(mApiClient.isConnected()){
+                            LocationServices.FusedLocationApi.removeLocationUpdates(mApiClient, loc_pendingIntent);
+                            ActivityRecognition.ActivityRecognitionApi.removeActivityUpdates(mApiClient, pendingIntent);
+                            mApiClient.disconnect();
+                        }
+
+
+
+                        //alarmIntent.cancel();
+                        // stop measurement of baseline
+                        db.replaceSwitchAndTS("off", String.valueOf(System.currentTimeMillis()));
+                        sharedPrefsEditor.putBoolean("coachSwitchStateChecked", false);
+                        coachSwitchTextView.setText("Coaching is off");
+                        Intent intent = new Intent();
+                        intent.setAction("com.example.Broadcast1");
+                        intent.putExtra("START_TIME", 0L); // clear millisec time
+                        MainActivity.this.sendBroadcast(intent);
+                        remoteSensorManager.stopMeasurement();
+                        SharedPreferences pref = MainActivity.this.getSharedPreferences("START_TIME", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putLong("START_TIME", 0L);
+                        editor.apply();
+                    }
+                    sharedPrefsEditor.commit();
+                }
+
+            }
+        };
+
+
+        coachSwitch.setOnCheckedChangeListener(checkBtnChangeCoachMode);
+        setSwitch();
+
+
+
+
         // start new intent
         Intent intent = new Intent();
         intent.setAction("com.example.Broadcast");
@@ -186,68 +259,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
 
-    CompoundButton.OnCheckedChangeListener checkBtnChangeCoachMode = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-            AlarmManager alarmManager=(AlarmManager) MainActivity.this.getSystemService(MainActivity.this.ALARM_SERVICE);
-            //Intent intent2 = new Intent();
-            //intent2.setAction("com.example.measureMomentAlarm");
-            Intent moment_intent = new Intent(MainActivity.this, DefineMoment.class);
-            alarmIntent = PendingIntent.getService(MainActivity.this, 0, moment_intent, 0);
 
-
-            if (isChecked) {
-                db.deleteAllMaster();
-                db.addMasterData(String.valueOf(user.getUniqueUserId()),String.valueOf(System.currentTimeMillis()),
-                        "75", "0", "0", "1", "1", "1", "10", "0",
-                        "0", null, null, null);
-
-                mApiClient.connect();
-                //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),60000,
-                    //    alarmIntent);
-                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),60000,
-                        alarmIntent);
-                Intent intent3 = new Intent();
-                intent3.setAction("com.example.sendMessageAlarm");
-                intent3.putExtra("moment", String.valueOf(1));
-                sharedPrefsEditor.putInt("momentState", 1);
-                MainActivity.this.sendBroadcast(intent3);
-
-                sharedPrefsEditor.putBoolean("coachSwitchStateChecked", true);
-                long timeInMs = System.currentTimeMillis();
-                coachSwitchTextView.setText("Coaching is on");
-
-                lastMeasurementTime = System.currentTimeMillis();
-                remoteSensorManager.startMeasurement();
-                Intent intent = new Intent();
-                intent.setAction("com.example.Broadcast1");
-                intent.putExtra("START_TIME", lastMeasurementTime); // get current millisec time
-                MainActivity.this.sendBroadcast(intent);
-                SharedPreferences pref = MainActivity.this.getSharedPreferences("START_TIME", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putLong("START_TIME", lastMeasurementTime);
-                editor.apply();
-            } else {
-                LocationServices.FusedLocationApi.removeLocationUpdates(mApiClient, loc_pendingIntent);
-                ActivityRecognition.ActivityRecognitionApi.removeActivityUpdates(mApiClient, pendingIntent);
-                mApiClient.disconnect();
-                alarmIntent.cancel();
-                // stop measurement of baseline
-                sharedPrefsEditor.putBoolean("coachSwitchStateChecked", false);
-                coachSwitchTextView.setText("Coaching is off");
-                Intent intent = new Intent();
-                intent.setAction("com.example.Broadcast1");
-                intent.putExtra("START_TIME", 0L); // clear millisec time
-                MainActivity.this.sendBroadcast(intent);
-                remoteSensorManager.stopMeasurement();
-                SharedPreferences pref = MainActivity.this.getSharedPreferences("START_TIME", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putLong("START_TIME", 0L);
-                editor.apply();
-            }
-            sharedPrefsEditor.commit();
-        }
-    };
 
     private void setPrefHandler(){
         sharedPrefs = getSharedPreferences(Constants.SHARED_PREFS_NAME, 0);
@@ -260,8 +272,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             db.addUser(new UserModel());
             user = db.getUser(1);
 
-            String[] context_list = new String[]{"appointment/presentation", "working/studying",
-                    "social situation", "change of schedule/plan", "unknown"};
+            String[] context_list = new String[]{"unknown", "appointment/presentation", "working/studying",
+                    "social situation", "change of schedule/plan"};
 
             for(int i=0; i<context_list.length; i++)
             {
@@ -468,6 +480,33 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    public void setSwitch(){
+
+        HashMap<String, String> switch_info = db.getSwitchandTS();
+        String coach_switch = switch_info.get("switch");
+
+        switch((coach_switch != null) ? coach_switch : "off"){
+            case "on":
+                coachSwitch.setChecked(true);
+                coachSwitchTextView.setText("Coaching is on");
+                break;
+            case "off":
+                coachSwitch.setChecked(false);
+                coachSwitchTextView.setText("Coaching is off");
+                break;
+        }
+
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        Log.e("GOOGLE API CONNECTED", String.valueOf(mApiClient.isConnected()));
+        setSwitch();
 
     }
 

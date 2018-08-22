@@ -18,86 +18,83 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:paddingBottom="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="16dp"
-    android:clipToPadding="false"
-    >
+    android:paddingTop="8dp">
 
     <RelativeLayout
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@drawable/measurement_circle"
         android:layout_alignParentStart="true"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="0dp">
+        android:layout_marginTop="0dp"
+        android:background="@drawable/measurement_circle">
 
         <TextView
+            android:id="@+id/levelText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="1"
-            android:id="@+id/levelText"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="1"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#FFFFFF"
             android:visibility="gone" />
 
         <ImageView
+            android:id="@+id/levelImage"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/levelImage"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
 
     <RelativeLayout
+        android:id="@+id/measurement_details"
         android:layout_width="fill_parent"
-        android:id = "@+id/measurement_details"
-        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:background="@color/colorPrimaryDark"
+        android:elevation="5dp"
         android:minHeight="30dp"
-        android:layout_height="wrap_content"
-        android:outlineProvider="background"
-        android:elevation="5dp">
+        android:outlineProvider="background">
 
         <TextView
+            android:id="@+id/text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Hulp via de telefoon"
-            android:id="@+id/text1"
-            android:layout_marginStart="10dp"
-            android:textColor="#ffffff"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="5dp" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="08-07-2018 12:34"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#ffffff" />
 
         <RelativeLayout
+            android:id="@+id/contextDescriptionContainer"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_alignParentStart="true"
-            android:background="#ffffff"
             android:layout_marginTop="30dp"
-            android:visibility="visible"
-            android:id="@+id/contextDescriptionContainer">
+            android:background="#ffffff"
+            android:visibility="visible">
+
             <TextView
+                android:id="@+id/contextDescriptionTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Je zit hoog in de fysiologische schaal. Zou je daar een toelichting voor kunnen geven?"
                 android:padding="10dp"
-                android:id="@+id/contextDescriptionTextView" />
+                android:text="Je zit hoog in de fysiologische schaal. Zou je daar een toelichting voor kunnen geven?" />
 
         </RelativeLayout>
 
 
     </RelativeLayout>
-
-
-
 
 
 </LinearLayout>

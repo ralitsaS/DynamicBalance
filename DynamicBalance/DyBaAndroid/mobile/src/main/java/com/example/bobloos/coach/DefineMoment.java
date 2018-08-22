@@ -51,6 +51,8 @@ public class DefineMoment extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+
         List<HeartRateDataModel> latest_ten_measures = db.getLatestMeasures();
         int count = latest_ten_measures.size();
         float totalHR = 0;
@@ -151,8 +153,11 @@ public class DefineMoment extends Service{
 
 
 
+
         sendToServer();
 
+        //boolean coachCheck= sharedPrefs.getBoolean("coachSwitchStateChecked", false);
+        //Toast.makeText(getApplicationContext(), String.valueOf(coachCheck), Toast.LENGTH_LONG).show();
 
         return START_NOT_STICKY;
     }
@@ -181,7 +186,7 @@ public class DefineMoment extends Service{
                     String[] separated;
                     //Log.d("php response",m);
                     //prgDialog.hide();
-                    Toast.makeText(getApplicationContext(), m, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), m, Toast.LENGTH_LONG).show();
                     if(!m.equals("nope"))
                     {
                         separated = m.split(":");
@@ -198,6 +203,7 @@ public class DefineMoment extends Service{
                     }
 
                     db.deleteAllMaster();
+                    db.replaceSwitchAndTS("on", String.valueOf(System.currentTimeMillis()));
 
                 }
 
@@ -206,11 +212,11 @@ public class DefineMoment extends Service{
                     // called when response HTTP status is "4XX" (eg. 401, 403, 404)
                     // prgDialog.hide();
                     if(statusCode == 404){
-                        Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
                     }else if(statusCode == 500){
-                        Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
                     }else{
-                        Toast.makeText(getApplicationContext(), "error code: "+statusCode, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "error code: "+statusCode, Toast.LENGTH_LONG).show();
                         //Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet]", Toast.LENGTH_LONG).show();
                     }
                 }

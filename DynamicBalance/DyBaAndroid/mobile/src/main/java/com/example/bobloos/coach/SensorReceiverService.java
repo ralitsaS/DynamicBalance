@@ -184,6 +184,14 @@ public class SensorReceiverService extends WearableListenerService {
             hrModel.setHeartRate(String.valueOf(values[0]));
             hrModel.setMeasurementTime(timestamp);
             db.addHeartRateData(hrModel);
+
+            HashMap<String,String> switch_info = db.getSwitchandTS();
+            String last_moment_ts = switch_info.get("moment_ts");
+            String coach_switch = switch_info.get("switch");
+            List<HeartRateDataModel> hrs = db.getAllHeartRateAfterTimeStamp(Long.parseLong(last_moment_ts));
+            if (hrs.size() >= 10 && coach_switch.equals("on")){
+                startService(new Intent(this, DefineMoment.class));
+            }
         }
 
         sensorManager.addSensorData(sensorType, accuracy, timestamp, values);

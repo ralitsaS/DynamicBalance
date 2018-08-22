@@ -141,6 +141,7 @@ public class EditPhysStateContext extends AppCompatActivity {
         Intent intent = new Intent(EditPhysStateContext.this, MainActivity.class);
         intent.putExtra("pageId", "0");
         EditPhysStateContext.this.startActivity(intent);
+        EditPhysStateContext.this.finish();
     }
 
     public void deleteContextDescription(){
@@ -155,6 +156,7 @@ public class EditPhysStateContext extends AppCompatActivity {
                         Intent intent = new Intent(EditPhysStateContext.this, MainActivity.class);
                         intent.putExtra("pageId", "0");
                         EditPhysStateContext.this.startActivity(intent);
+                        EditPhysStateContext.this.finish();
                     }
                 })
                 .setNegativeButton("Nee", new DialogInterface.OnClickListener() {

@@ -117,6 +117,7 @@ public class EditSelfReport extends AppCompatActivity {
         Intent intent = new Intent(EditSelfReport.this, MainActivity.class);
         intent.putExtra("pageId", "1");
         EditSelfReport.this.startActivity(intent);
+        EditSelfReport.this.finish();
     }
 
     public void deleteSelfReport(){
@@ -135,6 +136,7 @@ public class EditSelfReport extends AppCompatActivity {
                         intent.putExtra("pageId", "1");
 
                         EditSelfReport.this.startActivity(intent);
+                        EditSelfReport.this.finish();
                     }
                 })
                 .setNegativeButton("Nee", new DialogInterface.OnClickListener() {

@@ -22,7 +22,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 11;
     // Database Name
     private static final String DATABASE_NAME = "coachDB";
 
@@ -38,12 +38,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_MASTER = "master";
     private static final String TABLE_FEEDBACK = "feedback";
     private static final String TABLE_CONTEXT = "context_list";
+    private static final String TABLE_TIMESTAMP = "hr_timestamp";
 
     // COMMON column names
     private static final String KEY_ID = "id";
     private static final String KEY_USER_ID = "userId";
     private static final String KEY_UNIQUE_USER_ID = "uniqueUserId";
     private static final String KEY_MEASUREMENT_TIME = "measurementTime";
+    private static final String KEY_MOMENT_TS = "moment_ts";
+    private static final String KEY_SWITCH = "switch";
 
 
     // MONITOR DATA column names
@@ -103,6 +106,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_USER_HR = "userHR";
     public static final String KEY_USER_STD = "userSTD";
     public static final String KEY_CONTEXTLIST = "contextlist";
+    public static final String KEY_SENT = "sent";
 
 
     public DatabaseHandler(Context context) {
@@ -200,10 +204,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 KEY_TIMESTAMP + " TEXT, "+
                 KEY_PREDICTION + " TEXT, "+
                 KEY_Y + " TEXT, "+
-                KEY_CONTEXT + " TEXT); ";
+                KEY_CONTEXT + " TEXT, "+
+                KEY_SENT + " TEXT); ";
 
         String CREATE_CONTEXT_TABLE = "CREATE TABLE "+TABLE_CONTEXT+" ( " +
                 KEY_CONTEXTLIST + " TEXT); ";
+
+        String CREATE_TIMESTAMP_TABLE = "CREATE TABLE "+TABLE_TIMESTAMP+" ( " +
+                KEY_ID + " TEXT PRIMARY KEY, "+
+                KEY_SWITCH + " TEXT, "+
+                KEY_MOMENT_TS+ " TEXT); ";
 
 
         //db.execSQL(CREATE_TABLE_SYNCED);
@@ -219,6 +229,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_MASTER_TABLE);
         db.execSQL(CREATE_FEEDBACK_TABLE);
         db.execSQL(CREATE_CONTEXT_TABLE);
+        db.execSQL(CREATE_TIMESTAMP_TABLE);
     }
 
     @Override
@@ -234,6 +245,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MASTER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FEEDBACK);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTEXT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TIMESTAMP);
         this.onCreate(db);
     }
 
@@ -306,11 +318,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        String sent = null;
         values.put(KEY_UNIQUE_USER_ID, uni_id);
         values.put(KEY_TIMESTAMP, ts);
         values.put(KEY_PREDICTION, prediction);
         values.put(KEY_Y, y);
         values.put(KEY_CONTEXT, context);
+        values.put(KEY_SENT, sent);
         db.insert(TABLE_FEEDBACK, null, values);
         db.close();
 
@@ -319,7 +333,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public ArrayList<HashMap<String, String>> getFeedbackData() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT  * FROM " + TABLE_FEEDBACK;
+        String query = "SELECT  * FROM " + TABLE_FEEDBACK + " ORDER BY timestamp DESC limit 500";
         ArrayList<HashMap<String, String>> FeedbackDataAll = new ArrayList<HashMap<String, String>>();
         Cursor cursor = db.rawQuery(query, null);
 
@@ -339,6 +353,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return FeedbackDataAll;
     }
 
+    public ArrayList<HashMap<String, String>> getUnsentFeedbackData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT  * FROM " + TABLE_FEEDBACK +" WHERE " + KEY_SENT + " IS NULL";
+        ArrayList<HashMap<String, String>> USFeedbackDataAll = new ArrayList<HashMap<String, String>>();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> FeedbackData = new HashMap<String, String>();
+                FeedbackData.put("uni_id", cursor.getString(0));
+                FeedbackData.put("timestamp", cursor.getString(1));
+                FeedbackData.put("prediction", cursor.getString(2));
+                FeedbackData.put("y", cursor.getString(3));
+                FeedbackData.put("context", cursor.getString(4));
+                USFeedbackDataAll.add(FeedbackData);
+
+            } while (cursor.moveToNext());
+        }
+
+        return USFeedbackDataAll;
+    }
+
     public HashMap<String, String> getSingleFeedback(String ts) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT  * FROM " + TABLE_FEEDBACK + " WHERE " + KEY_TIMESTAMP + " = " + ts;
@@ -355,6 +391,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return Feedback;
+    }
+
+    public void setSentFeedback(String timestamp){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_SENT, "ok");
+
+        db.update(TABLE_FEEDBACK, values, KEY_TIMESTAMP + " = ?",
+                new String[] { timestamp });
     }
 
     public void updateFeedback(String timestamp, String y, String context){
@@ -399,6 +445,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return ContextData;
+    }
+
+    public void replaceSwitchAndTS(String coach_switch, String ts) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID, "1");
+        values.put(KEY_SWITCH, coach_switch);
+        values.put(KEY_MOMENT_TS, ts);
+        db.replace(TABLE_TIMESTAMP, null, values);
+        db.close();
+    }
+
+    public HashMap<String, String> getSwitchandTS() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT  * FROM " + TABLE_TIMESTAMP;
+        HashMap<String, String> SwitchInfo = new HashMap<String, String>();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+
+            SwitchInfo.put("switch", cursor.getString(1));
+            SwitchInfo.put("moment_ts", cursor.getString(2));
+
+        }
+
+        return SwitchInfo;
     }
 
     // ALL CALLS RELATED TO ADDING MONITOR DATA

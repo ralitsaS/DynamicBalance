@@ -63,7 +63,7 @@ public class CoachListFragment extends Fragment {
         ArrayList<HashMap<String, String>> pred_items = db.getFeedbackData();
         if (pred_items.size() != 0) {
             for(int i=0; i<pred_items.size(); i++){
-                if(pred_items.get(i).get("prediction").equals("1"))
+                if(pred_items.get(i).get("prediction") != null && pred_items.get(i).get("prediction").equals("1"))
                     items_1.add(pred_items.get(i));
             }
 

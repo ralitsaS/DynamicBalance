@@ -154,7 +154,7 @@ public class SettingsActivity extends AppCompatActivity {
                 Intent intent = new Intent(SettingsActivity.this, BaseLineInitActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                SettingsActivity.this.finish();
+                //SettingsActivity.this.finish();
             }
         });
     }
@@ -363,7 +363,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void trainModel(){
 
-        feedback_data = db.getFeedbackData();
+        feedback_data = db.getUnsentFeedbackData();
         String jsondata = gson.toJson(feedback_data);
 
 
@@ -387,7 +387,14 @@ public class SettingsActivity extends AppCompatActivity {
                     String m = new String(response);
                     //Log.d("php response",m);
                     //prgDialog.hide();
+
+                    for(int i=0; i<feedback_data.size(); i++){
+                        db.setSentFeedback(feedback_data.get(i).get("timestamp"));
+                    }
+
                     Toast.makeText(getApplicationContext(), m, Toast.LENGTH_LONG).show();
+
+
 
                 }
 
